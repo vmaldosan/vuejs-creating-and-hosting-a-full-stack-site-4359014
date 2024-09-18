@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import * as VueRouter from 'vue-router'
 import App from './App.vue'
+import './main.css'
 import ShoppingCartPage from './pages/ShoppingCartPage.vue'
 import ProductsPage from './pages/ProductsPage.vue'
 import ProductDetailPage from './pages/ProductDetailPage.vue'
