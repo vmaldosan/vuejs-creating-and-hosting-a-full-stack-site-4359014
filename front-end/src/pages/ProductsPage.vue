@@ -6,7 +6,9 @@
 			<img :src="product.imageName" />
 			<h3 class="product-name">{{ product.name }}</h3>
 			<p class="product-price">{{ product.price }}</p>
-			<button>View details</button>
+			<router-link :to="'/products/' + product.id">
+				<button>View details</button>
+			</router-link>
 		</div>
 	</div>
 </template>
