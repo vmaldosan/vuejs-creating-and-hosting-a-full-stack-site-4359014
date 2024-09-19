@@ -1,12 +1,10 @@
 import express from 'express';
 import { MongoClient } from 'mongodb';
-import { cartItems as cartItemsRaw } from './temp-data.js';
 
 require('dotenv').config({ path: './.env' });
 
 const DB_NAME = 'linkedin-full-stack';
 const MONGO_PW = process.env.mongoPassword;
-let cartItems = cartItemsRaw;
 
 async function start() {
 	const client = new MongoClient(
@@ -45,9 +43,17 @@ async function start() {
 		res.json(product);
 	});
 
-	app.post('/cart', (req, res) => {
-		cartItems.push(req.body.id);
-		res.json(populatedCartIds(cartItems));
+	app.post('/users/:userId/cart', async (req, res) => {
+		const userId = req.params.userId;
+		const productId = req.body.id;
+		db.collection('users').updateOne(
+			{ id: userId },
+			{
+				$push: { cartItems: productId },
+			}
+		);
+		const user = await db.collection('users').findOne({ id: userId });
+		res.json(await populatedCartIds(user.cartItems));
 	});
 
 	app.delete('/cart/:productId', (req, res) => {
