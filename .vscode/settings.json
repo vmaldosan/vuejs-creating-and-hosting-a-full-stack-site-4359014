@@ -12,7 +12,7 @@
   "editor.useTabStops": true,
   "emmet.triggerExpansionOnTab": true,
   "explorer.openEditors.visible": 0,
-  "files.autoSave": "afterDelay",
+  "files.autoSave": "off",
   "screencastMode.onlyKeyboardShortcuts": true,
   "workbench.colorTheme": "Default Dark Modern",
   "workbench.fontAliasing": "antialiased",
