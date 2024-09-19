@@ -1,11 +1,11 @@
-import { createApp } from "vue";
-import * as VueRouter from "vue-router";
-import App from "./App.vue";
-import "./main.css";
-import ShoppingCartPage from "./pages/ShoppingCartPage.vue";
-import ProductsPage from "./pages/ProductsPage.vue";
-import ProductDetailPage from "./pages/ProductDetailPage.vue";
-import NotFoundPage from "./pages/NotFoundPage.vue";
+import { createApp } from 'vue';
+import * as VueRouter from 'vue-router';
+import App from './App.vue';
+import './main.css';
+import ShoppingCartPage from './pages/ShoppingCartPage.vue';
+import ProductsPage from './pages/ProductsPage.vue';
+import ProductDetailPage from './pages/ProductDetailPage.vue';
+import NotFoundPage from './pages/NotFoundPage.vue';
 
 createApp(App)
 	.use(
@@ -13,22 +13,22 @@ createApp(App)
 			history: VueRouter.createWebHistory(process.env.BASE_URL),
 			routes: [
 				{
-					path: "/cart",
-					component: ShoppingCartPage,
+					path: '/cart',
+					component: ShoppingCartPage
 				},
 				{
-					path: "/products",
-					component: ProductsPage,
+					path: '/products',
+					component: ProductsPage
 				},
 				{
-					path: "/products/:productId",
-					component: ProductDetailPage,
+					path: '/products/:productId',
+					component: ProductDetailPage
 				},
 				{
-					path: "/:pathMatch(.*)*",
-					component: NotFoundPage,
-				},
-			],
+					path: '/:pathMatch(.*)*',
+					component: NotFoundPage
+				}
+			]
 		})
 	)
-	.mount("#app");
+	.mount('#app');

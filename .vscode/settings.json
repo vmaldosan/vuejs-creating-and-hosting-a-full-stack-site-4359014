@@ -19,6 +19,9 @@
   "workbench.statusBar.visible": true,
   "liveServer.settings.root": "/docs",
   "prettier.enable": true,
+  "prettier.trailingComma": "none",
+  "prettier.singleQuote": true,
+  "prettier.useTabs": true,
   "eslint.alwaysShowStatus": false,
   "liveServer.settings.donotVerifyTags": true
 }

@@ -13,14 +13,14 @@
 </template>
 
 <script>
-import logo from "@/assets/logo-hexagon.svg";
+import logo from '@/assets/logo-hexagon.svg';
 
 export default {
-	name: "NavBar",
+	name: 'NavBar',
 	data() {
 		return {
-			logo,
+			logo
 		};
-	},
+	}
 };
 </script>

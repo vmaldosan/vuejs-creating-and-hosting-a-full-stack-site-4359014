@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import { MongoClient } from 'mongodb';
 
 require('dotenv').config({ path: './.env' });
@@ -13,13 +14,15 @@ async function start() {
 			`@cluster0.ftmqp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 	);
 
-	const app = express();
-
 	await client.connect();
 	const db = client.db(DB_NAME);
+
+	const app = express();
 	app.use(express.json());
 
-	app.get('/products', async (req, res) => {
+	app.use('/images', express.static(path.join(__dirname, '../assets')));
+
+	app.get('/api/products', async (req, res) => {
 		const products = await db.collection('products').find({}).toArray();
 		res.json(products);
 	});
@@ -30,39 +33,39 @@ async function start() {
 		);
 	}
 
-	app.get('/users/:userId/cart', async (req, res) => {
+	app.get('/api/users/:userId/cart', async (req, res) => {
 		const user = await db
 			.collection('users')
 			.findOne({ id: req.params.userId });
 		res.json(await populatedCartIds(user.cartItems));
 	});
 
-	app.get('/products/:productId', async (req, res) => {
+	app.get('/api/products/:productId', async (req, res) => {
 		const productId = req.params.productId;
 		const product = await db.collection('products').findOne({ id: productId });
 		res.json(product);
 	});
 
-	app.post('/users/:userId/cart', async (req, res) => {
+	app.post('/api/users/:userId/cart', async (req, res) => {
 		const userId = req.params.userId;
 		const productId = req.body.id;
 		await db.collection('users').updateOne(
 			{ id: userId },
 			{
-				$push: { cartItems: productId },
+				$push: { cartItems: productId }
 			}
 		);
 		const user = await db.collection('users').findOne({ id: userId });
 		res.json(await populatedCartIds(user.cartItems));
 	});
 
-	app.delete('/users/:userId/cart/:productId', async (req, res) => {
+	app.delete('/api/users/:userId/cart/:productId', async (req, res) => {
 		const userId = req.params.userId;
 		const productId = req.params.productId;
 		await db.collection('users').updateOne(
 			{ id: userId },
 			{
-				$pull: { cartItems: productId },
+				$pull: { cartItems: productId }
 			}
 		);
 		const user = await db.collection('users').findOne({ id: userId });
