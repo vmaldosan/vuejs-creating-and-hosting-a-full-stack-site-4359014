@@ -16,6 +16,7 @@ import ShoppingCartList from '@/components/ShoppingCartList.vue';
 
 export default {
 	name: 'ShoppingCartPage',
+	props: ['user'],
 	components: {
 		ShoppingCartList
 	},
@@ -24,15 +25,29 @@ export default {
 			cartItems: []
 		};
 	},
+	watch: {
+		async user(newUserValue) {
+			if (newUserValue) {
+				const cartResponse = await axios.get(
+					'/api/users/%{newUserValue.uid}/cart'
+				);
+				this.cartItems = cartResponse.data;
+			}
+		}
+	},
 	methods: {
 		async removeFromCart(productId) {
-			const response = await axios.delete(`/api/users/12345/cart/${productId}`);
+			const response = await axios.delete(
+				`/api/users/${this.user.uid}/cart/${productId}`
+			);
 			this.cartItems = response.data;
 		}
 	},
 	async created() {
-		const response = await axios.get('/api/users/12345/cart');
-		this.cartItems = response.data;
+		if (this.user) {
+			const response = await axios.get(`/api/users/${this.user.uid}/cart`);
+			this.cartItems = response.data;
+		}
 	}
 };
 </script>
