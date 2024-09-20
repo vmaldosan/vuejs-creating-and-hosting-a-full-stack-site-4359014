@@ -10,6 +10,7 @@
 				Add to cart
 			</button>
 			<button v-else class="grey-button">Already in cart</button>
+			<button class="sign-in" @click="signIn">Sign in to add to cart</button>
 		</div>
 	</div>
 	<div v-else>
@@ -19,6 +20,12 @@
 
 <script>
 import axios from 'axios';
+import {
+	getAuth,
+	sendSignInLinkToEmail,
+	isSignInWithEmailLink,
+	signInWithEmailLink
+} from 'firebase/auth';
 import NotFoundPage from './NotFoundPage.vue';
 
 export default {
@@ -42,6 +49,15 @@ export default {
 				id: this.$route.params.productId
 			});
 			alert('Successfully added item to cart');
+		},
+		signIn() {
+			const email = prompt('Please enter your email to sign in:');
+			const auth = getAuth();
+			const actionCodeSettings = {
+				url: 'localhost:8080/products/${this.$route.params.productId}',
+				handleCodeInApp: true
+			};
+			sendSignInLinkToEmail(auth, email, actionCodeSettings);
 		}
 	},
 	components: {
