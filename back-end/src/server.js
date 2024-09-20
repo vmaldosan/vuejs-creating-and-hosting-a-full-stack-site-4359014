@@ -37,7 +37,7 @@ async function start() {
 		const user = await db
 			.collection('users')
 			.findOne({ id: req.params.userId });
-		res.json(await populatedCartIds(user.cartItems));
+		res.json(await populatedCartIds(user?.cartItems || []));
 	});
 
 	app.get('/api/products/:productId', async (req, res) => {
@@ -56,7 +56,7 @@ async function start() {
 			}
 		);
 		const user = await db.collection('users').findOne({ id: userId });
-		res.json(await populatedCartIds(user.cartItems));
+		res.json(await populatedCartIds(user?.cartItems || []));
 	});
 
 	app.delete('/api/users/:userId/cart/:productId', async (req, res) => {
@@ -69,7 +69,7 @@ async function start() {
 			}
 		);
 		const user = await db.collection('users').findOne({ id: userId });
-		res.json(await populatedCartIds(user.cartItems));
+		res.json(await populatedCartIds(user?.cartItems || []));
 	});
 
 	app.listen(8000, () => {
