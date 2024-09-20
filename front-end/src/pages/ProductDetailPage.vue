@@ -6,7 +6,10 @@
 		<div class="product-details">
 			<h1>{{ product.name }}</h1>
 			<h3 class="price">{{ product.price }}</h3>
-			<button class="add-to-cart" @click="addToCart">Add to cart</button>
+			<button v-if="!isInCart" class="add-to-cart" @click="addToCart">
+				Add to cart
+			</button>
+			<button v-else class="grey-button">Already in cart</button>
 		</div>
 	</div>
 	<div v-else>
@@ -22,8 +25,16 @@ export default {
 	name: 'ProductDetailPage',
 	data() {
 		return {
-			product: {}
+			product: {},
+			cartItems: []
 		};
+	},
+	computed: {
+		isInCart() {
+			return this.cartItems.some(
+				(item) => item.id === this.$route.params.productId
+			);
+		}
 	},
 	methods: {
 		async addToCart() {
@@ -40,8 +51,10 @@ export default {
 		const response = await axios.get(
 			`/api/products/${this.$route.params.productId}`
 		);
-		const product = response.data;
-		this.product = product;
+		this.product = response.data;
+
+		const cartResponse = await axios.get('/api/users/12345/cart');
+		this.cartItems = cartResponse.data;
 	}
 };
 </script>
